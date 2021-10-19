@@ -69,12 +69,18 @@ var enemyInfo = [
 
 var fight = function(enemy) {
     while(playerInfo.health > 0 && enemy.health > 0) {
-        
-    // If the player chooses to fight, then fight
+        var fightOrSkip = function(){
+    // ask player if they'd like to fight or skip using fightOrSkip function
      var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
 
+     // Conditional Recursive Function Call
+if (promptFight === "" || promptFight === null) {
+    window.alert("You need to provide a valid answer! Please try again.");
+    return fightOrSkip();
+  }
+  promptFight = promptFight.toLowerCase();
     // If the player chooses to skip
-     if (promptFight === "skip" || promptFight === "SKIP") {
+     if (promptFight === "skip") {
           // confirm player wants to skip
     var confirmSkip = window.confirm("Are you sure you'd like to quit?");
 
@@ -83,17 +89,19 @@ var fight = function(enemy) {
         window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
         //subtract money from playerMoney for skipping
         playerInfo.money = Math.max(0, playerInfo.money - 10);
-        console.log("playerMoney", playerInfo.money)
+        console.log("playerMoney", playerInfo.money);
+        
+        //return true if player wants to leave
+        return true;
+    }
+   return false;
+    }
+        }
+        
+    if (fightOrSkip()) {
+        //if true, leave the fight by breaking the loop
         break;
     }
-    // if no (false), ask question again by running fight() again
-    else {
-        fight();
-    }
-    }
-
-     if (promptFight === "fight" || promptFight === "FIGHT") {
- 
      // generate random damage value based on player's attack power
      var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
 
@@ -140,7 +148,7 @@ var fight = function(enemy) {
  
     }
  
-}
+
 //function to start a new game
 var startGame = function() {
     // reset player stats
